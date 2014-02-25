@@ -16,10 +16,10 @@ if [[ ${#@} = 0 ]]; then
   exit 1
 fi
 
-docker run -d -name=${PREFIX}1 $IMAGE serf agent -rpc-addr=0.0.0.0:7373
+docker run -d --hostname=${PREFIX}1 -name=${PREFIX}1 $IMAGE serf agent -rpc-addr=0.0.0.0:7373
 SEED=$(./ipof.sh ${PREFIX}1)
 
 for (( instance=$HOW_MANY; $instance > 1; instance=$instance - 1 )); do
-	docker run -d -name ${PREFIX}${instance} $IMAGE serf agent -join=$SEED
+	docker run -d --hostname=${PREFIX}${instance} -name ${PREFIX}${instance} $IMAGE serf agent -join=$SEED
 done
 
